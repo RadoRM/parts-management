@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Piece;
 use App\Entity\Famille;
 use App\Entity\Fournisseur;
 use App\Entity\SousFamille;

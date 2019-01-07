@@ -1,20 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Hello
+    {{ controller_name }}!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>Stock</h2>
+                </div>
+            </div>
+            <div class="panel col-md-12">
+                <table class="table" id="stock">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fournisseur</th>
+                            <th scope="col">Famille</th>
+                            <th scope="col">Sous-famille</th>
+                            <th scope="col">Emplacement dans magasin</th>
+                            <th scope="col">Quantité en stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for piece in pieces %}
+                            <tr>
+                                <th scope="row">{{ piece.id }}</th>
+                                <td>{{ piece.fournisseur.name }}</td>
+                                <td>{{ piece.famille.name }}</td>
+                                <td>{{ piece.sousFamille.name }}</td>
+                                <td>{{ piece.location }}</td>
+                                <td>{{ piece.stockQuantity }}</td>
+                            </tr>
+                        {% endfor %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/PieceController.php'|file_link(0) }}">src/Controller/PieceController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/piece/index.html.twig'|file_link(0) }}">templates/piece/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block javascripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#stock').DataTable({
+                "language": {
+                    "sProcessing": "Traitement en cours...",
+                    "sSearch": "Rechercher&nbsp;:",
+                    "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+                    "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                    "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+                    "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Chargement en cours...",
+                    "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                    "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+                    "oPaginate": {
+                        "sFirst": "Premier",
+                        "sPrevious": "Pr&eacute;c&eacute;dent",
+                        "sNext": "Suivant",
+                        "sLast": "Dernier"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+                    },
+                    "select": {
+                        "rows": {
+                            _: "%d lignes séléctionnées",
+                            0: "Aucune ligne séléctionnée",
+                            1: "1 ligne séléctionnée"
+                        }
+                    }
+                }
+            });
+            $('#stock_length').css('display', 'none');
+        });
+    </script>
 {% endblock %}
