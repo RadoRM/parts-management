@@ -5,6 +5,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+    <link rel="stylesheet" href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css">
 {% endblock %}
 
 {% block body %}
@@ -16,21 +17,43 @@
                 </div>
             </div>
             <div class="panel col-md-12">
-                <table class="table" id="stock">
+                <table class="table table-bordered table-striped" id="stock">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Fournisseur</th>
-                            <th scope="col">Famille</th>
-                            <th scope="col">Sous-famille</th>
-                            <th scope="col">Emplacement dans magasin</th>
-                            <th scope="col">Quantité en stock</th>
+                            <th>Fournisseur</th>
+                            <th>Famille</th>
+                            <th>Sous-famille</th>
+                            <th>Emplacement dans magasin</th>
+                            <th>Quantité en stock</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5" class="ts-pager">
+                                <div class="form-inline">
+                                    <div class="btn-group btn-group-sm mx-1" role="group">
+                                        <button type="button" class="btn btn-secondary first" title="first">⇤</button>
+                                        <button type="button" class="btn btn-secondary prev" title="previous">←</button>
+                                    </div>
+                                    <span class="pagedisplay"></span>
+                                    <div class="btn-group btn-group-sm mx-1" role="group">
+                                        <button type="button" class="btn btn-secondary next" title="next">→</button>
+                                        <button type="button" class="btn btn-secondary last" title="last">⇥</button>
+                                    </div>
+                                    <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
+                                        <option selected="selected" value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="all">All Rows</option>
+                                    </select>
+                                    <select class="form-control-sm custom-select px-4 mx-1 pagenum" title="Select page number"></select>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                         {% for piece in pieces %}
                             <tr>
-                                <th scope="row">{{ piece.id }}</th>
                                 <td>{{ piece.fournisseur.name }}</td>
                                 <td>{{ piece.famille.name }}</td>
                                 <td>{{ piece.sousFamille.name }}</td>
@@ -47,10 +70,12 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+    <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+    <script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
     <script>
         $(document).ready(function () {
-            $('#stock').DataTable({
+            /*$('#stock').DataTable({
                 "language": {
                     "sProcessing": "Traitement en cours...",
                     "sSearch": "Rechercher&nbsp;:",
@@ -81,7 +106,62 @@
                     }
                 }
             });
-            $('#stock_length').css('display', 'none');
+            $('#stock_length').css('display', 'none');*/
+
+            $("table#stock")
+                .tablesorter({
+                    theme: "bootstrap", widthFixed: true,
+
+                    // widget code contained in the jquery.tablesorter.widgets.js file
+                    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+                    // the uitheme widget is NOT REQUIRED!
+                    widgets: [
+                        "filter", "columns", "zebra"
+                    ],
+
+                    widgetOptions: {
+                        // using the default zebra striping class name, so it actually isn't included in the theme variable above
+                        // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+                        zebra: [
+                            "even", "odd"
+                        ],
+
+                        // class names added to columns when sorted
+                        columns: [
+                            "primary", "secondary", "tertiary"
+                        ],
+
+                        // reset filters button
+                        filter_reset: ".reset",
+
+                        // extra css class name (string or array) added to the filter element (input or select)
+                        filter_cssFilter: [
+                            'form-control', // select needs custom class names :(
+                            'form-control',
+                            'form-control',
+                            'form-control',
+                            'form-control'
+                        ]
+
+                    }
+                })
+                .tablesorterPager({
+
+                    // target the pager markup - see the HTML block below
+                    container: $(".ts-pager"),
+
+                    // target the pager page select dropdown - choose a page
+                    cssGoto: ".pagenum",
+
+                    // remove rows from the table to speed up the sort of large tables.
+                    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+                    removeRows: false,
+
+                    // output string - default is '{page}/{totalPages}';
+                    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+                    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+
+                });
         });
     </script>
 {% endblock %}
