@@ -28,9 +28,15 @@ class Fournisseur
      */
     private $pieces;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mouvement", mappedBy="fournisseur")
+     */
+    private $mouvements;
+
     public function __construct()
     {
         $this->pieces = new ArrayCollection();
+        $this->mouvements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,37 @@ class Fournisseur
             // set the owning side to null (unless already changed)
             if ($piece->getFournisseur() === $this) {
                 $piece->setFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mouvement[]
+     */
+    public function getMouvements(): Collection
+    {
+        return $this->mouvements;
+    }
+
+    public function addMouvement(Mouvement $mouvement): self
+    {
+        if (!$this->mouvements->contains($mouvement)) {
+            $this->mouvements[] = $mouvement;
+            $mouvement->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMouvement(Mouvement $mouvement): self
+    {
+        if ($this->mouvements->contains($mouvement)) {
+            $this->mouvements->removeElement($mouvement);
+            // set the owning side to null (unless already changed)
+            if ($mouvement->getFournisseur() === $this) {
+                $mouvement->setFournisseur(null);
             }
         }
 

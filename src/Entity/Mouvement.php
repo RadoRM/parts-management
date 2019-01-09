@@ -17,11 +17,6 @@ class Mouvement
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Piece", inversedBy="mouvements")
-     */
-    private $piece;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $quantity;
@@ -51,21 +46,24 @@ class Mouvement
      */
     private $type;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="mouvements")
+     */
+    private $fournisseur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Famille", inversedBy="mouvements")
+     */
+    private $famille;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SousFamille", inversedBy="mouvements")
+     */
+    private $sousFamille;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPiece(): ?Piece
-    {
-        return $this->piece;
-    }
-
-    public function setPiece(?Piece $piece): self
-    {
-        $this->piece = $piece;
-
-        return $this;
     }
 
     public function getQuantity(): ?int
@@ -136,6 +134,42 @@ class Mouvement
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $fournisseur): self
+    {
+        $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getFamille(): ?Famille
+    {
+        return $this->famille;
+    }
+
+    public function setFamille(?Famille $famille): self
+    {
+        $this->famille = $famille;
+
+        return $this;
+    }
+
+    public function getSousFamille(): ?SousFamille
+    {
+        return $this->sousFamille;
+    }
+
+    public function setSousFamille(?SousFamille $sousFamille): self
+    {
+        $this->sousFamille = $sousFamille;
 
         return $this;
     }

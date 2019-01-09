@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formMouvementPiece 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .form-group-piece {
+            display: inline-block;
+            padding: 0 10%;
+            margin: 0 auto;
+        }
+        .form-group-piece .col-md-3 {
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .form-group-piece {
+                display: inline-block;
+                padding: 1% 0;
+            }
+        }
+
+        .btn-container {
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Enregistrement d'une entrée</h1>
+
+        {{ form_start(formMouvementPiece) }}
+        <div class="col-md-9 form-group-piece  d-flex justify-content-between">
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Fournisseur</label>
+                {{ form_widget(formMouvementPiece.fournisseur, {'attr': {'placeholder': 'Fournisseur'}}) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Famille</label>
+                {{ form_widget(formMouvementPiece.famille, {'attr': {'placeholder': 'Famille'}}) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Sous-famille</label>
+                {{ form_widget(formMouvementPiece.sousFamille, {'attr': {'placeholder': 'Sous-famille'}}) }}
+            </div>
+        </div>
+        <div class="col-md-9 form-group-piece  d-flex justify-content-between">
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Quantité</label>
+                {{ form_widget(formMouvementPiece.quantity, {'attr': {'placeholder': 'Quantité'}}) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Dimension</label>
+                {{ form_widget(formMouvementPiece.dimension, {'attr': {'placeholder': 'Dimension'}}) }}
+            </div>
+            <div class="form-group col-md-3 col-sm-12 col-xs-12">
+                <label for="">Poids</label>
+                {{ form_widget(formMouvementPiece.weight, {'attr': {'placeholder': 'Poids'}}) }}
+            </div>
+        </div>
+        <div class="col-md-3 btn-container">
+            <button type="submit" class="btn btn-success">
+                Enregistrer
+            </button>
+        </div>
+
+        {{ form_end(formMouvementPiece) }}
+    </div>
+
+{% endblock %}

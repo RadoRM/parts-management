@@ -43,11 +43,6 @@ class Piece
      */
     private $stockQuantity;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Mouvement", mappedBy="piece")
-     */
-    private $mouvements;
-
     public function __construct()
     {
         $this->mouvements = new ArrayCollection();
@@ -114,37 +109,6 @@ class Piece
     public function setStockQuantity(int $stockQuantity): self
     {
         $this->stockQuantity = $stockQuantity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Mouvement[]
-     */
-    public function getMouvements(): Collection
-    {
-        return $this->mouvements;
-    }
-
-    public function addMouvement(Mouvement $mouvement): self
-    {
-        if (!$this->mouvements->contains($mouvement)) {
-            $this->mouvements[] = $mouvement;
-            $mouvement->setPiece($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMouvement(Mouvement $mouvement): self
-    {
-        if ($this->mouvements->contains($mouvement)) {
-            $this->mouvements->removeElement($mouvement);
-            // set the owning side to null (unless already changed)
-            if ($mouvement->getPiece() === $this) {
-                $mouvement->setPiece(null);
-            }
-        }
 
         return $this;
     }

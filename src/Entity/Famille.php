@@ -33,10 +33,16 @@ class Famille
      */
     private $pieces;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Mouvement", mappedBy="famille")
+     */
+    private $mouvements;
+
     public function __construct()
     {
         $this->sousFamilles = new ArrayCollection();
         $this->pieces = new ArrayCollection();
+        $this->mouvements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,6 +118,37 @@ class Famille
             // set the owning side to null (unless already changed)
             if ($piece->getFamille() === $this) {
                 $piece->setFamille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mouvement[]
+     */
+    public function getMouvements(): Collection
+    {
+        return $this->mouvements;
+    }
+
+    public function addMouvement(Mouvement $mouvement): self
+    {
+        if (!$this->mouvements->contains($mouvement)) {
+            $this->mouvements[] = $mouvement;
+            $mouvement->setFamille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMouvement(Mouvement $mouvement): self
+    {
+        if ($this->mouvements->contains($mouvement)) {
+            $this->mouvements->removeElement($mouvement);
+            // set the owning side to null (unless already changed)
+            if ($mouvement->getFamille() === $this) {
+                $mouvement->setFamille(null);
             }
         }
 
