@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MouvementRepository")
@@ -18,16 +19,28 @@ class Mouvement
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="La valeur {{ value }} n'est pas une valeur {{ type }} valide."
+     * )
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @Assert\Type(
+     *     type="double",
+     *     message="La valeur {{ value }} n'est pas une valeur {{ type }} valide."
+     * )
      */
     private $dimension;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+     * @Assert\Type(
+     *     type="double",
+     *     message="La valeur {{ value }} n'est pas une valeur {{ type }} valide."
+     * )
      */
     private $weight;
 

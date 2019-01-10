@@ -39,13 +39,11 @@ class PieceController extends AbstractController
     }
 
     /**
-     * @Route("/piece/mouvement", name="piece_mouvement")
+     * @Route("/mouvement/new", name="mouvement_create")
      */
-    public function mouvement(Mouvement $mouvement = null, Request $request, ObjectManager $manager)
+    public function create(Request $request, ObjectManager $manager)
     {
-        if(!$mouvement){
-            $mouvement = new Mouvement();
-        }
+        $mouvement = new Mouvement();
 
         $form = $this->createFormBuilder($mouvement)
                      ->add('fournisseur', EntityType::class, [
@@ -58,7 +56,10 @@ class PieceController extends AbstractController
                      ])
                      ->add('sousFamille', EntityType::class, [
                          'class' => SousFamille::class,
-                         'choice_label' => 'name'
+                         'choice_label' => 'name',
+                         'choice_attr' => function (SousFamille $sousFamille, $key, $index) {
+                            return array('data-famille' => $sousFamille->getFamille()->getId());
+                        }
                      ])
                      ->add('quantity')
                      ->add('dimension')
@@ -67,22 +68,26 @@ class PieceController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            if(!$mouvement->getId()){
-                $mouvement->setCreatedAt(new \DateTime());
-            }
-            $mouvement->setType(1);
+        dump($mouvement);
 
-            // set piece
-            
+        if($form->isSubmitted() && $form->isValid()){
+            $mouvement->setCreatedAt(new \DateTime());
+            $mouvement->setType(1);
             
             $manager->persist($mouvement);
             $manager->flush();
 
-            // return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
+            // return $this->redirectToRoute('mouvement_create');
         }
+
+        // list of sousFamille
+        $repo = $this->getDoctrine()->getRepository(SousFamille::class);
+
+        $sousFamilles = $repo->findAll();
+
         return $this->render('piece/mouvement.html.twig', [
-            'formMouvementPiece' => $form->createView()
+            'formMouvementPiece' => $form->createView(),
+            'sousFamilles' => $sousFamilles
         ]);
     }
 }

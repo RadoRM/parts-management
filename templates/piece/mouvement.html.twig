@@ -71,3 +71,28 @@
     </div>
 
 {% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $("select#form_famille").change(function () {
+                familleId = $(this).val();
+                $("select#form_sousFamille option").each(function () {
+                    if ($(this).data("famille") != familleId) 
+                        $(this).hide();
+                    else 
+                        $(this).show();
+                    }
+                );
+            });
+
+            $("select#form_sousFamille option").each(function () {
+                if ($(this).data("famille") != 1) 
+                    $(this).hide();
+                else 
+                    $(this).show();
+                }
+            );
+            $("select#form_sousFamille").prepend("<option value='' selected>Sous-famille</option>");
+        });
+    </script>
+{% endblock %}
