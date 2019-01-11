@@ -6,6 +6,17 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <link rel="stylesheet" href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css">
+    <style>
+        .btn-piece-location-edit {
+            float: right;
+            display: none !important;
+        }
+
+        .modal-content {
+            width: 50% !important;
+            margin: 0 auto !important;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -57,13 +68,41 @@
                                 <td>{{ piece.fournisseur.name }}</td>
                                 <td>{{ piece.famille.name }}</td>
                                 <td>{{ piece.sousFamille.name }}</td>
-                                <td>{{ piece.location }}</td>
+                                <td height="42">
+                                    <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
+                                    <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille.id }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
+                                </td>
                                 <td>{{ piece.stockQuantity }}</td>
                             </tr>
                         {% endfor %}
 
                     </tbody>
                 </table>
+                <div class="modal fade" id="locationEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content"></div>
+                    </div>
+                    <div class="modal-dialog">
+                        <div class="modal-content"></div>
+                    </div>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true" class="">×
+                                    </span><span class="sr-only">Femer</span>
+
+                                </button>
+
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                <button type="button" class="btn btn-primary">Terminer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -73,6 +112,7 @@
     <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
     <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
     <script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(document).ready(function () {
             /*$('#stock').DataTable({
@@ -162,6 +202,69 @@
                     output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
 
                 });
+
+            $("table#stock tbody tr td:nth-child(4)").mouseover(function () {
+                $(this).find('button').attr('style', 'display: inline-block !important');
+            });
+            $("table#stock tbody tr td:nth-child(4)").mouseleave(function () {
+                $(this).find('button').attr('style', 'display: none !important');
+            });
+
+            $(".btn[data-target='#locationEditModal']").click(function () {
+                var modalBody = $('<div id="modalContent"></div>');
+                var modalForm = $('<form role="form" name="modalForm" method="post"></form>');
+
+                var formGroup = $('<div class="form-group"></div>');
+                formGroup.append('<label for="piece-conteneur">Conteneur</label>');
+                formGroup.append('<input class="form-control" name="piece-conteneur" id="piece-conteneur" value="' + $(this).data('conteneur') + '"/>');
+                formGroup.append('<input type="hidden" id="piece-fournisseur" value="' + $(this).data('fournisseur') + '"/>');
+                formGroup.append('<input type="hidden" id="piece-famille" value="' + $(this).data('famille') + '"/>');
+                formGroup.append('<input type="hidden" id="piece-sousFamille" value="' + $(this).data('sous-famille') + '"/>');
+                formGroup.append('<input type="hidden" id="piece-iteration" value="' + $(this).data('iteration') + '"/>');
+
+                modalForm.append(formGroup);
+
+                formGroup = $('<div class="form-group"></div>');
+                formGroup.append('<label for="piece-etagere">Etagère</label>');
+                formGroup.append('<input class="form-control" name="piece-etagere" id="piece-etagere" value="' + $(this).data('etagere') + '"/>');
+                modalForm.append(formGroup);
+
+                formGroup = $('<div class="form-group"></div>');
+                formGroup.append('<label for="piece-niveau">Niveau</label>');
+                formGroup.append('<input class="form-control" name="piece-niveau" id="piece-niveau" value="' + $(this).data('niveau') + '"/>');
+                modalForm.append(formGroup);
+
+                modalBody.append(modalForm);
+                $('.modal-body').html(modalBody);
+            });
+
+            $('.modal-footer .btn-primary').click(function (event) {
+                event.preventDefault();
+                // $('form[name="modalForm"]').submit();
+                onClickBtnEdit();
+            });
         });
+
+        function onClickBtnEdit() {
+
+            axios.post("/piece/location/edit", {
+                conteneur: $("#piece-conteneur").val(),
+                etagere: $("#piece-etagere").val(),
+                niveau: $("#piece-niveau").val(),
+                fournisseur: $("#piece-fournisseur").val(),
+                famille: $("#piece-famille").val(),
+                sousFamille: $("#piece-sousFamille").val()
+            }).then(response => {
+                $("span#piece-location-" + $("#piece-iteration").val()).html(response.data.location);
+                $('#locationEditModal').modal('toggle');
+            }).catch(function (error) {
+                if (error.response.status === 403) {
+                    window.alert("Pas connecté");
+                } else {
+                    window.alert("Grosse erreur");
+                }
+            });
+
+        }
     </script>
 {% endblock %}

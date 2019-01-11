@@ -42,6 +42,9 @@ class Piece
      * @ORM\Column(type="integer")
      */
     private $stockQuantity;
+    private $conteneur;
+    private $etagere;
+    private $niveau;
 
     public function __construct()
     {
@@ -111,5 +114,31 @@ class Piece
         $this->stockQuantity = $stockQuantity;
 
         return $this;
+    }
+
+    public function explodeLocation(string $location): self
+    {
+        if($location != ""){
+            $levels = explode("|", $location);
+            $this->conteneur = $levels[0];
+            $this->etagere = $levels[1];
+            $this->niveau = $levels[2];
+        }
+        return $this;
+    }
+
+    public function getConteneur(): ?string
+    {
+        return $this->conteneur;
+    }
+
+    public function getEtagere(): ?string
+    {
+        return $this->etagere;
+    }
+
+    public function getNiveau(): ?string
+    {
+        return $this->niveau;
     }
 }
