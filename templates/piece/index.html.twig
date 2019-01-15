@@ -67,10 +67,14 @@
                             <tr>
                                 <td>{{ piece.fournisseur.name }}</td>
                                 <td>{{ piece.famille.name }}</td>
-                                <td>{{ piece.sousFamille.name }}</td>
+                                <td>
+                                    {% if piece.sousFamille is not null and piece.sousFamille is defined %}
+                                        {{ piece.sousFamille.name }}
+                                    {% endif %}
+                                </td>
                                 <td height="42">
                                     <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
-                                    <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille.id }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
+                                    <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille ? piece.sousFamille.id : '' }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
                                 </td>
                                 <td>{{ piece.stockQuantity }}</td>
                             </tr>

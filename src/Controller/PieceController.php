@@ -47,13 +47,15 @@ class PieceController extends AbstractController
         $piece = $pieceRepo->findOneBy([
             'fournisseur' => $params->fournisseur,
             'famille' => $params->famille,
-            'sousFamille' => $params->sousFamille
+            'sousFamille' => $params->sousFamille ? $params->sousFamille : null
         ]);
 
-        $piece->setLocation($params->conteneur . "|" . $params->etagere . "|" . $params->niveau);
-
-        $manager->persist($piece);
-        $manager->flush();
+        if($piece){
+            $piece->setLocation($params->conteneur . "|" . $params->etagere . "|" . $params->niveau);
+    
+            $manager->persist($piece);
+            $manager->flush();
+        }
 
         $location = "Conteneur " . ($params->conteneur ? $params->conteneur : "?") . ", Etagère " . ($params->etagere ? $params->etagere : "?") . ", Niveau " . ($params->niveau ? $params->niveau : "?");
 
