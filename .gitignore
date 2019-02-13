@@ -317,3 +317,10 @@ Temporary Items
 /web/js/
 
 # End of https://www.gitignore.io/api/linux,symfony,reactnative
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
