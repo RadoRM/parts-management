@@ -1,0 +1,2 @@
+"https://{default}/": { type: upstream, upstream: "pieces-management:http" }
+"http://{default}/": { type: redirect, to: "https://{default}/" }
