@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégorie{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .pt-3-half {
+            padding-top: 1.4rem;
+        }
+
+        .card {
+            margin: 2% 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <!-- Editable table -->
+            <div class="card">
+                <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Fournisseur</h3>
+                <div class="card-body">
+                    <div id="table" class="table-editable">
+                        <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><button class="btn btn-success">Ajouter</button></a></span>
+                        <table class="table table-bordered table-responsive-md table-striped text-center" id="fournisseurs-table">
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Nom</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            {% for fournisseur in fournisseurs %}
+                                <tr>
+                                    <td class="pt-3-half" contenteditable="false">{{ fournisseur.id }}</td>
+                                    <td class="pt-3-half" data-id="{{ fournisseur.id }}" data-formervalue="{{ fournisseur.name }}" contenteditable="true">{{ fournisseur.name }}</td>
+                                    <td>
+                                        <span class="table-remove" data-id="{{ fournisseur.id }}"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="hide" style="display: none;">
+                                <td class="pt-3-half" contenteditable="false">&nbsp;</td>
+                                <td class="pt-3-half" data-id="" data-formervalue="" contenteditable="true"></td>
+                                <td>
+                                    <span class="table-save"><button type="button" class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
+                                    <span class="table-remove" data-id=""><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Editable table -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            var $TABLE = $('#fournisseurs-table');
+
+            $('.table-add').click(function () {
+                var $clone = $TABLE.find('tr.hide').clone(true).removeAttr('style');
+                $TABLE.append($clone);
+            });
+
+            $('.table-remove').click(function () {
+                catId = $(this).data('id');
+                if(catId){
+                    if(confirm("Etes-vous sûr?")){
+                        axios.post("/piece/categorie/delete", {
+                            id: catId,
+                        }).then(response => {
+                            console.log("Done");
+                        }).catch(function (error) {
+                            if(error.response){
+                                if (error.response.status === 403) {
+                                    window.alert("Pas connecté");
+                                } else {
+                                    window.alert("Grosse erreur");
+                                }
+                            }
+                        });
+                        $(this).parents('tr').detach();
+                    }
+                }
+                
+            });
+
+            // row edit
+            document.querySelectorAll('#fournisseurs-table td').forEach(e => e.addEventListener("focusout", function() {
+                if(e.dataset.formervalue != undefined && typeof e.innerHTML == "string" && e.dataset.formervalue !== e.innerHTML){
+                    axios.post("/piece/categorie/edit", {
+                        id: e.dataset.id,
+                        name: e.innerHTML
+                    }).then(response => {
+                        console.log("Done");
+                    }).catch(function (error) {
+                        if(error.response){
+                            if (error.response.status === 403) {
+                                window.alert("Pas connecté");
+                            } else {
+                                window.alert("Grosse erreur");
+                            }
+                        }
+                    });
+                }
+            }));
+
+            $('.table-save').click(function () {
+                catValue = $(this).parents('tr').children("td:nth-child(2)").html();
+
+                if(catValue != ""){
+                    axios.post("/piece/categorie/create", {
+                        name: catValue
+                    }).then(response => {
+                        console.log("Done : " + response.data.categorieId);
+                        $(this).parents('td').find('span.table-remove').attr('data-id', response.data.categorieId);
+                        $(this).parents('tr').find("td:nth-child(1)").html(response.data.categorieId);
+                        $(this).parents('tr').find("td:nth-child(2)").attr('data-id', response.data.categorieId);
+                        $(this).parents('tr').find("td:nth-child(2)").attr('data-formervalue', catValue);
+                        // set edit listener
+                        $(this).remove();
+                    }).catch(function (error) {
+                        if(error.response){
+                            if (error.response.status === 403) {
+                                window.alert("Pas connecté");
+                            } else {
+                                window.alert("Grosse erreur");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $(this).parents('tr').children("td:nth-child(2)").focus();
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

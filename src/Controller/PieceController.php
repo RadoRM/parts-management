@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Piece;
+use App\Entity\Fournisseur;
 use App\Repository\PieceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -66,4 +67,109 @@ class PieceController extends AbstractController
         ], 200);
 
     }
+    
+    /**
+     * @Route("/piece/categorie", name="piece_categorie_list")
+     */
+    public function listCategories(Request $request, ObjectManager $manager, PieceRepository $pieceRepo)
+    {
+        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+
+        $fournisseurs = $repo->findAll();
+
+        return $this->render('piece/categories.html.twig', [
+            'controller_name' => 'PieceController',
+            'fournisseurs' => $fournisseurs
+        ]);
+
+    }
+
+    /**
+     * @Route("/piece/categorie/edit", name="piece_categorie_edit")
+     */
+    public function editCategories(Request $request, ObjectManager $manager)
+    {
+        $data = $request->getContent();
+        $params = json_decode($data);
+
+        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+
+        $fournisseur = $repo->find($params->id);
+
+
+        if($fournisseur){
+            $fournisseur->setName($params->name);
+    
+            $manager->persist($fournisseur);
+            $manager->flush();
+        }
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Catégorie edité"
+        ], 200);
+
+    }
+
+    /**
+     * @Route("/piece/categorie/create", name="piece_categorie_create")
+     */
+    public function createCategorie(Request $request, ObjectManager $manager)
+    {
+        $data = $request->getContent();
+        $params = json_decode($data);
+
+        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+
+        $fournisseur = $repo->findOneBy([
+            'name' => $params->name
+        ]);
+
+        if(!$fournisseur){
+            $fournisseur = new Fournisseur();
+            $fournisseur->setName($params->name);
+    
+            $manager->persist($fournisseur);
+            $manager->flush();
+        }
+        else {
+            return $this->json([
+                'code' => 200,
+                'message' => "Catégorie déjà existant"
+            ], 200);
+        }
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Catégorie ajouté",
+            'categorieId' => $fournisseur->getId()
+        ], 200);
+
+    }
+
+    /**
+     * @Route("/piece/categorie/delete", name="piece_categorie_delete")
+     */
+    public function deleteCategorie(Request $request, ObjectManager $manager)
+    {
+        $data = $request->getContent();
+        $params = json_decode($data);
+
+        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+
+        $fournisseur = $repo->find($params->id);
+
+        if($fournisseur){
+            $manager->remove($fournisseur);
+            $manager->flush();
+        }
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Catégorie supprimé"
+        ], 200);
+
+    }
+
+
 }
