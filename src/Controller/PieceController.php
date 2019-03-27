@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Piece;
 use App\Entity\Fournisseur;
+use App\Entity\Famille;
 use App\Repository\PieceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -74,14 +75,16 @@ class PieceController extends AbstractController
     public function listCategories(Request $request, ObjectManager $manager, PieceRepository $pieceRepo)
     {
         $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
-
         $fournisseurs = $repo->findAll();
+
+        $repo = $this->getDoctrine()->getRepository(Famille::class);
+        $familles = $repo->findAll();
 
         return $this->render('piece/categories.html.twig', [
             'controller_name' => 'PieceController',
-            'fournisseurs' => $fournisseurs
+            'fournisseurs' => $fournisseurs,
+            'familles' => $familles
         ]);
-
     }
 
     /**
@@ -92,21 +95,27 @@ class PieceController extends AbstractController
         $data = $request->getContent();
         $params = json_decode($data);
 
-        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+        switch ($params->type) {
+            case 'fournisseur':
+                $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+                break;
+            case 'famille':
+                $repo = $this->getDoctrine()->getRepository(Famille::class);
+                break;
+        }
 
-        $fournisseur = $repo->find($params->id);
+        $categorie = $repo->find($params->id);
 
-
-        if($fournisseur){
-            $fournisseur->setName($params->name);
+        if($categorie){
+            $categorie->setName($params->name);
     
-            $manager->persist($fournisseur);
+            $manager->persist($categorie);
             $manager->flush();
         }
 
         return $this->json([
             'code' => 200,
-            'message' => "Catégorie edité"
+            'message' => "Catégorie editée"
         ], 200);
 
     }
@@ -119,30 +128,51 @@ class PieceController extends AbstractController
         $data = $request->getContent();
         $params = json_decode($data);
 
-        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
-
-        $fournisseur = $repo->findOneBy([
-            'name' => $params->name
-        ]);
-
-        if(!$fournisseur){
-            $fournisseur = new Fournisseur();
-            $fournisseur->setName($params->name);
-    
-            $manager->persist($fournisseur);
-            $manager->flush();
-        }
-        else {
-            return $this->json([
-                'code' => 200,
-                'message' => "Catégorie déjà existant"
-            ], 200);
+        switch ($params->type) {
+            case 'fournisseur':
+                $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+                $categorie = $repo->findOneBy([
+                    'name' => $params->name
+                ]);
+                if(!$categorie){
+                    $categorie = new Fournisseur();
+                    $categorie->setName($params->name);
+            
+                    $manager->persist($categorie);
+                    $manager->flush();
+                }
+                else {
+                    return $this->json([
+                        'code' => 200,
+                        'message' => "Catégorie déjà existant"
+                    ], 200);
+                }
+                break;
+            case 'famille':
+                $repo = $this->getDoctrine()->getRepository(Famille::class);
+                $categorie = $repo->findOneBy([
+                    'name' => $params->name
+                ]);
+                if(!$categorie){
+                    $categorie = new Famille();
+                    $categorie->setName($params->name);
+            
+                    $manager->persist($categorie);
+                    $manager->flush();
+                }
+                else {
+                    return $this->json([
+                        'code' => 200,
+                        'message' => "Catégorie déjà existant"
+                    ], 200);
+                }
+                break;
         }
 
         return $this->json([
             'code' => 200,
             'message' => "Catégorie ajouté",
-            'categorieId' => $fournisseur->getId()
+            'categorieId' => $categorie->getId()
         ], 200);
 
     }
@@ -155,12 +185,19 @@ class PieceController extends AbstractController
         $data = $request->getContent();
         $params = json_decode($data);
 
-        $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+        switch ($params->type) {
+            case 'fournisseur':
+                $repo = $this->getDoctrine()->getRepository(Fournisseur::class);
+                break;
+            case 'famille':
+                $repo = $this->getDoctrine()->getRepository(Famille::class);
+                break;
+        }
 
-        $fournisseur = $repo->find($params->id);
+        $categorie = $repo->find($params->id);
 
-        if($fournisseur){
-            $manager->remove($fournisseur);
+        if($categorie){
+            $manager->remove($categorie);
             $manager->flush();
         }
 
