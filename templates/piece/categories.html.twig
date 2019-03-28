@@ -87,7 +87,47 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                
+                <div class="card">
+                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Sous-familles</h3>
+                    <div class="card-body">
+                        <div id="table" class="table-editable container-table">
+                            <span class="sf-table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><button class="btn btn-success">Ajouter</button></a></span>
+                            <table class="table table-bordered table-responsive-md table-striped text-center category-table" id="sous-famille-table">
+                                <tr>
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Famille</th>
+                                    <th class="text-center">Nom</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                                {% for sousFamille in sousFamilles %}
+                                    <tr>
+                                        <td class="pt-3-half" contenteditable="false">{{ sousFamille.id }}</td>
+                                        <td class="pt-3-half" contenteditable="false">{{ sousFamille.famille.name }}</td>
+                                        <td class="pt-3-half" data-id="{{ sousFamille.id }}" data-type="sousFamille" data-formervalue="{{ sousFamille.name }}" contenteditable="false">{{ sousFamille.name }}</td>
+                                        <td>
+                                            <span class="sf-table-remove" data-id="{{ sousFamille.id }}" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr class="hide" style="display: none;">
+                                    <td class="pt-3-half" contenteditable="false">&nbsp;</td>
+                                    <td class="pt-3-half" contenteditable="true">
+                                        <select>
+                                            {% for famille in familles %}
+                                                <option value="{{ famille.id }}">{{ famille.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td class="pt-3-half" contenteditable="true"></td>
+                                    <td>
+                                        <span class="sf-table-save"><button type="button" class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
+                                        <span class="sf-table-remove" data-id="" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Editable table -->
         </div>
@@ -114,6 +154,7 @@
                             type: catType
                         }).then(response => {
                             console.log("Done");
+                            $(this).parents('tr').detach();
                         }).catch(function (error) {
                             if(error.response){
                                 if (error.response.status === 403) {
@@ -128,7 +169,6 @@
                 } else {
                     $(this).parents('tr').detach();
                 }
-                
             });
 
             // row edit
@@ -178,6 +218,69 @@
                 }
                 else {
                     $(this).parents('tr').children("td:nth-child(2)").focus();
+                }
+            });
+
+            // sous-famille
+
+            $('.sf-table-add').on('click', function () {
+                var $clone = $("table#sous-famille-table").find('tr.hide').clone(true).removeAttr('style').removeClass('hide');
+                $(this).parent().find('table#sous-famille-table').append($clone);
+            });
+
+            $('.sf-table-save').click(function () {
+                familleId = $(this).parents('tr').children("td:nth-child(2)").find('select').val();
+                familleName = $(this).parents('tr').children("td:nth-child(2)").find('select option:selected').text();
+                catValue = $(this).parents('tr').children("td:nth-child(3)").html();
+                if(catValue != ""){
+                    axios.post("/piece/sous-famille/create", {
+                        name: catValue,
+                        famille: familleId
+                    }).then(response => {
+                        console.log("Done");
+                        $(this).parents('td').find('span.sf-table-remove').attr('data-id', response.data.categorieId);
+                        $(this).parents('tr').find("td:nth-child(1)").html(response.data.categorieId);
+                        $(this).parents('tr').find("td:nth-child(2)").html(familleName);
+                        $(this).parents('tr').find("td:nth-child(2)").attr('data-id', response.data.categorieId);
+                        $(this).remove();
+                    }).catch(function (error) {
+                        if(error.response){
+                            if (error.response.status === 403) {
+                                window.alert("Pas connecté");
+                            } else {
+                                window.alert("Grosse erreur");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $(this).parents('tr').children("td:nth-child(3)").focus();
+                }
+            });
+
+            $('.sf-table-remove').click(function () {
+                catId = $(this).data('id');
+                catType = $(this).data('type');
+                if(catId){
+                    if(confirm("Etes-vous sûr?")){
+                        axios.post("/piece/categorie/delete", {
+                            id: catId,
+                            type: catType
+                        }).then(response => {
+                            console.log("Done");
+                            $(this).parents('tr').detach();
+                        }).catch(function (error) {
+                            if(error.response){
+                                if (error.response.status === 403) {
+                                    window.alert("Pas connecté");
+                                } else {
+                                    window.alert("Grosse erreur");
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    $(this).parents('tr').detach();
                 }
             });
         });

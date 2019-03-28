@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Piece;
 use App\Entity\Fournisseur;
 use App\Entity\Famille;
+use App\Entity\SousFamille;
 use App\Repository\PieceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -80,10 +81,14 @@ class PieceController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Famille::class);
         $familles = $repo->findAll();
 
+        $repo = $this->getDoctrine()->getRepository(SousFamille::class);
+        $sousFamilles = $repo->findAll();
+
         return $this->render('piece/categories.html.twig', [
             'controller_name' => 'PieceController',
             'fournisseurs' => $fournisseurs,
-            'familles' => $familles
+            'familles' => $familles,
+            'sousFamilles' => $sousFamilles
         ]);
     }
 
@@ -192,6 +197,9 @@ class PieceController extends AbstractController
             case 'famille':
                 $repo = $this->getDoctrine()->getRepository(Famille::class);
                 break;
+            case 'sousFamille':
+                $repo = $this->getDoctrine()->getRepository(SousFamille::class);
+                break;
         }
 
         $categorie = $repo->find($params->id);
@@ -204,6 +212,47 @@ class PieceController extends AbstractController
         return $this->json([
             'code' => 200,
             'message' => "Catégorie supprimé"
+        ], 200);
+
+    }
+
+    /**
+     * @Route("/piece/sous-famille/create", name="piece_sousfamille_create")
+     */
+    public function createSfCategorie(Request $request, ObjectManager $manager)
+    {
+        $data = $request->getContent();
+        $params = json_decode($data);
+
+        $repo = $this->getDoctrine()->getRepository(Famille::class);
+        $famille = $repo->find($params->famille);
+
+        $repo = $this->getDoctrine()->getRepository(SousFamille::class);
+
+        $sousFamille = $repo->findOneBy([
+            'name' => $params->name,
+            'famille' => $famille
+        ]);
+
+        if(!$sousFamille){
+            $sousFamille = new SousFamille();
+            $sousFamille->setName($params->name);
+            $sousFamille->setFamille($famille);
+    
+            $manager->persist($sousFamille);
+            $manager->flush();
+        }
+        else {
+            return $this->json([
+                'code' => 200,
+                'message' => "Catégorie déjà existant"
+            ], 200);
+        }
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Catégorie ajouté",
+            'categorieId' => $sousFamille->getId()
         ], 200);
 
     }
