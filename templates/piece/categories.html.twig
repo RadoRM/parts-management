@@ -35,7 +35,12 @@
                                         <td class="pt-3-half" contenteditable="false">{{ fournisseur.id }}</td>
                                         <td class="pt-3-half" data-id="{{ fournisseur.id }}" data-type="fournisseur" data-formervalue="{{ fournisseur.name }}" contenteditable="true">{{ fournisseur.name }}</td>
                                         <td>
-                                            <span class="table-remove" data-id="{{ fournisseur.id }}" data-type="fournisseur"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% if fournisseur.pieces is empty %}
+                                                <span class="table-remove" data-id="{{ fournisseur.id }}" data-type="fournisseur"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -69,7 +74,12 @@
                                         <td class="pt-3-half" contenteditable="false">{{ famille.id }}</td>
                                         <td class="pt-3-half" data-id="{{ famille.id }}" data-type="famille" data-formervalue="{{ famille.name }}" contenteditable="true">{{ famille.name }}</td>
                                         <td>
-                                            <span class="table-remove" data-type="famille" data-id="{{ famille.id }}"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% if famille.pieces is empty and famille.mouvements is empty %}
+                                                <span class="table-remove" data-type="famille" data-id="{{ famille.id }}"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -105,7 +115,12 @@
                                         <td class="pt-3-half" contenteditable="false">{{ sousFamille.famille.name }}</td>
                                         <td class="pt-3-half" data-id="{{ sousFamille.id }}" data-type="sousFamille" data-formervalue="{{ sousFamille.name }}" contenteditable="false">{{ sousFamille.name }}</td>
                                         <td>
-                                            <span class="sf-table-remove" data-id="{{ sousFamille.id }}" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% if sousFamille.pieces is empty and sousFamille.mouvements is empty %}
+                                                <span class="sf-table-remove" data-id="{{ sousFamille.id }}" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -241,6 +256,7 @@
                         $(this).parents('td').find('span.sf-table-remove').attr('data-id', response.data.categorieId);
                         $(this).parents('tr').find("td:nth-child(1)").html(response.data.categorieId);
                         $(this).parents('tr').find("td:nth-child(2)").html(familleName);
+                        $(this).parents('tr').find("td:nth-child(3)").attr('contenteditable', false);
                         $(this).parents('tr').find("td:nth-child(2)").attr('data-id', response.data.categorieId);
                         $(this).remove();
                     }).catch(function (error) {

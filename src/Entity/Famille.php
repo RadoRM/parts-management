@@ -24,7 +24,7 @@ class Famille
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SousFamille", mappedBy="famille")
+     * @ORM\OneToMany(targetEntity="App\Entity\SousFamille", mappedBy="famille", orphanRemoval=true)
      */
     private $sousFamilles;
 
