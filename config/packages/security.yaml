@@ -1,13 +1,29 @@
 security:
+    encoders:
+        App\Entity\User: # algotith de hashage de password
+            algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: ~ }
+        in_database: # montrer a sf où aller chercher les infos, quel class/property tester
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+            provider: in_database
+            form_login: #mode d'authentification par le formulaire de login
+                login_path: security_login #nom de la route
+                check_path: security_login #où vérifier les informations de login
+                default_target_path : piece
+            
+            logout:
+                path: security_logout
+                target: piece
 
             # activate different ways to authenticate
 

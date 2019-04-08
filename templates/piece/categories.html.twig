@@ -1,305 +1,142 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Catégorie{% endblock %}
-
+{% block title %}
+  Categories
+{% endblock %}
 {% block stylesheets %}
-    <style>
-        .pt-3-half {
-            padding-top: 1.4rem;
-        }
-
-        .card {
-            margin: 2% 0;
-        }
-    </style>
+  <style>
+    .pt-3-half {
+      padding-top: 1.4rem;
+    }
+  </style>
 {% endblock %}
-
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <!-- Editable table -->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="card">
-                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Fournisseurs</h3>
-                    <div class="card-body">
-                        <div id="table" class="table-editable">
-                            <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><button class="btn btn-success">Ajouter</button></a></span>
-                            <table class="table table-bordered table-responsive-md table-striped text-center category-table" id="categories-table">
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Nom</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                                {% for fournisseur in fournisseurs %}
-                                    <tr>
-                                        <td class="pt-3-half" contenteditable="false">{{ fournisseur.id }}</td>
-                                        <td class="pt-3-half" data-id="{{ fournisseur.id }}" data-type="fournisseur" data-formervalue="{{ fournisseur.name }}" contenteditable="true">{{ fournisseur.name }}</td>
-                                        <td>
-                                            {% if fournisseur.pieces is empty %}
-                                                <span class="table-remove" data-id="{{ fournisseur.id }}" data-type="fournisseur"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
-                                            {% else %}
-                                                -
-                                            {% endif %}
-                                            
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <tr class="hide" style="display: none;">
-                                    <td class="pt-3-half" contenteditable="false">&nbsp;</td>
-                                    <td class="pt-3-half" data-id="" data-type="fournisseur" data-formervalue="" contenteditable="true"></td>
-                                    <td>
-                                        <span class="table-save" data-type="fournisseur"><button type="button" class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
-                                        <span class="table-remove" data-type="fournisseur" data-id=""><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="card">
-                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Familles</h3>
-                    <div class="card-body">
-                        <div id="table" class="table-editable container-table">
-                            <span class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><button class="btn btn-success">Ajouter</button></a></span>
-                            <table class="table table-bordered table-responsive-md table-striped text-center category-table" id="categories-table">
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Nom</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                                {% for famille in familles %}
-                                    <tr>
-                                        <td class="pt-3-half" contenteditable="false">{{ famille.id }}</td>
-                                        <td class="pt-3-half" data-id="{{ famille.id }}" data-type="famille" data-formervalue="{{ famille.name }}" contenteditable="true">{{ famille.name }}</td>
-                                        <td>
-                                            {% if famille.pieces is empty and famille.mouvements is empty %}
-                                                <span class="table-remove" data-type="famille" data-id="{{ famille.id }}"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
-                                            {% else %}
-                                                -
-                                            {% endif %}
-                                            
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <tr class="hide" style="display: none;">
-                                    <td class="pt-3-half" contenteditable="false">&nbsp;</td>
-                                    <td class="pt-3-half" data-id="" data-type="famille" data-formervalue="" contenteditable="true"></td>
-                                    <td>
-                                        <span class="table-save" data-type="famille"><button type="button" class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
-                                        <span class="table-remove" data-type="famille" data-id=""><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="card">
-                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Sous-familles</h3>
-                    <div class="card-body">
-                        <div id="table" class="table-editable container-table">
-                            <span class="sf-table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><button class="btn btn-success">Ajouter</button></a></span>
-                            <table class="table table-bordered table-responsive-md table-striped text-center category-table" id="sous-famille-table">
-                                <tr>
-                                    <th class="text-center">ID</th>
-                                    <th class="text-center">Famille</th>
-                                    <th class="text-center">Nom</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                                {% for sousFamille in sousFamilles %}
-                                    <tr>
-                                        <td class="pt-3-half" contenteditable="false">{{ sousFamille.id }}</td>
-                                        <td class="pt-3-half" contenteditable="false">{{ sousFamille.famille.name }}</td>
-                                        <td class="pt-3-half" data-id="{{ sousFamille.id }}" data-type="sousFamille" data-formervalue="{{ sousFamille.name }}" contenteditable="false">{{ sousFamille.name }}</td>
-                                        <td>
-                                            {% if sousFamille.pieces is empty and sousFamille.mouvements is empty %}
-                                                <span class="sf-table-remove" data-id="{{ sousFamille.id }}" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0 remove-btn">Remove</button></span>
-                                            {% else %}
-                                                -
-                                            {% endif %}
-                                            
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                <tr class="hide" style="display: none;">
-                                    <td class="pt-3-half" contenteditable="false">&nbsp;</td>
-                                    <td class="pt-3-half" contenteditable="true">
-                                        <select>
-                                            {% for famille in familles %}
-                                                <option value="{{ famille.id }}">{{ famille.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </td>
-                                    <td class="pt-3-half" contenteditable="true"></td>
-                                    <td>
-                                        <span class="sf-table-save"><button type="button" class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
-                                        <span class="sf-table-remove" data-id="" data-type="sousFamille"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Editable table -->
+  <div class="container">
+    <div class="row">
+      <div class="card">
+        <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Editable table</h3>
+        <div class="card-body">
+          <div class="table-editable" id="table">
+            <span class="table-add float-right mb-3 mr-2">
+              <a class="text-success" href="#!">
+                <i aria-hidden="true" class="fas fa-plus fa-2x"></i>
+              </a>
+            </span>
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+              <tr>
+                <th class="text-center">Person Name</th>
+                <th class="text-center">Age</th>
+                <th class="text-center">Company Name</th>
+                <th class="text-center">Country</th>
+                <th class="text-center">City</th>
+                <th class="text-center">Sort</th>
+                <th class="text-center">Remove</th>
+              </tr>
+              <tr>
+                <td class="pt-3-half" contenteditable="true">Aurelia Vega</td>
+                <td class="pt-3-half" contenteditable="true">30</td>
+                <td class="pt-3-half" contenteditable="true">Deepends</td>
+                <td class="pt-3-half" contenteditable="true">Spain</td>
+                <td class="pt-3-half" contenteditable="true">Madrid</td>
+                <td class="pt-3-half">
+                  <span class="table-up">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-up"></i>
+                    </a>
+                  </span>
+                  <span class="table-down">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-down"></i>
+                    </a>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-remove">
+                    <button class="btn btn-danger btn-rounded btn-sm my-0" type="button">Remove</button>
+                  </span>
+                </td>
+              </tr>
+              <!-- This is our clonable table line -->
+              <tr>
+                <td class="pt-3-half" contenteditable="true">Guerra Cortez</td>
+                <td class="pt-3-half" contenteditable="true">45</td>
+                <td class="pt-3-half" contenteditable="true">Insectus</td>
+                <td class="pt-3-half" contenteditable="true">USA</td>
+                <td class="pt-3-half" contenteditable="true">San Francisco</td>
+                <td class="pt-3-half">
+                  <span class="table-up">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-up"></i>
+                    </a>
+                  </span>
+                  <span class="table-down">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-down"></i>
+                    </a>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-remove">
+                    <button class="btn btn-danger btn-rounded btn-sm my-0" type="button">Remove</button>
+                  </span>
+                </td>
+              </tr>
+              <!-- This is our clonable table line -->
+              <tr>
+                <td class="pt-3-half" contenteditable="true">Guadalupe House</td>
+                <td class="pt-3-half" contenteditable="true">26</td>
+                <td class="pt-3-half" contenteditable="true">Isotronic</td>
+                <td class="pt-3-half" contenteditable="true">Germany</td>
+                <td class="pt-3-half" contenteditable="true">Frankfurt am Main</td>
+                <td class="pt-3-half">
+                  <span class="table-up">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-up"></i>
+                    </a>
+                  </span>
+                  <span class="table-down">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-down"></i>
+                    </a>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-remove">
+                    <button class="btn btn-danger btn-rounded btn-sm my-0" type="button">Remove</button>
+                  </span>
+                </td>
+              </tr>
+              <!-- This is our clonable table line -->
+              <tr class="hide">
+                <td class="pt-3-half" contenteditable="true">Elisa Gallagher</td>
+                <td class="pt-3-half" contenteditable="true">31</td>
+                <td class="pt-3-half" contenteditable="true">Portica</td>
+                <td class="pt-3-half" contenteditable="true">United Kingdom</td>
+                <td class="pt-3-half" contenteditable="true">London</td>
+                <td class="pt-3-half">
+                  <span class="table-up">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-up"></i>
+                    </a>
+                  </span>
+                  <span class="table-down">
+                    <a class="indigo-text" href="#!">
+                      <i aria-hidden="true" class="fas fa-long-arrow-alt-down"></i>
+                    </a>
+                  </span>
+                </td>
+                <td>
+                  <span class="table-remove">
+                    <button class="btn btn-danger btn-rounded btn-sm my-0" type="button">Remove</button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 {% endblock %}
-
 {% block javascripts %}
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-
-        $(document).ready(function(){
-            $('.table-add').on('click', function () {
-                var $clone = $(this).parent().find('tr.hide').clone(true).removeAttr('style').removeClass('hide');
-                $(this).parent().find('table#categories-table').append($clone);
-            });
-
-            $('.table-remove').click(function () {
-                catId = $(this).data('id');
-                catType = $(this).data('type');
-                if(catId){
-                    if(confirm("Etes-vous sûr?")){
-                        axios.post("/piece/categorie/delete", {
-                            id: catId,
-                            type: catType
-                        }).then(response => {
-                            console.log("Done");
-                            $(this).parents('tr').detach();
-                        }).catch(function (error) {
-                            if(error.response){
-                                if (error.response.status === 403) {
-                                    window.alert("Pas connecté");
-                                } else {
-                                    window.alert("Grosse erreur");
-                                }
-                            }
-                        });
-                        
-                    }
-                } else {
-                    $(this).parents('tr').detach();
-                }
-            });
-
-            // row edit
-            $(".category-table td").on("focusout", function() {
-                if(this.dataset.formervalue && this.dataset.formervalue != undefined && typeof this.innerHTML == "string" && this.dataset.formervalue !== this.innerHTML){
-                    axios.post("/piece/categorie/edit", {
-                        id: this.dataset.id,
-                        type: this.dataset.type,
-                        name: this.innerHTML
-                    }).then(response => {
-                        console.log("Done");
-                    }).catch(function (error) {
-                        if(error.response){
-                            if (error.response.status === 403) {
-                                window.alert("Pas connecté");
-                            } else {
-                                window.alert("Grosse erreur");
-                            }
-                        }
-                    });
-                }
-            });
-
-            $('.table-save').click(function () {
-                catValue = $(this).parents('tr').children("td:nth-child(2)").html();
-                catType = $(this).data('type');
-                if(catValue != ""){
-                    axios.post("/piece/categorie/create", {
-                        name: catValue,
-                        type: catType
-                    }).then(response => {
-                        console.log("Done");
-                        $(this).parents('td').find('span.table-remove').attr('data-id', response.data.categorieId);
-                        $(this).parents('tr').find("td:nth-child(1)").html(response.data.categorieId);
-                        $(this).parents('tr').find("td:nth-child(2)").attr('data-id', response.data.categorieId);
-                        $(this).parents('tr').find("td:nth-child(2)").attr('data-formervalue', catValue);
-                        $(this).remove();
-                    }).catch(function (error) {
-                        if(error.response){
-                            if (error.response.status === 403) {
-                                window.alert("Pas connecté");
-                            } else {
-                                window.alert("Grosse erreur");
-                            }
-                        }
-                    });
-                }
-                else {
-                    $(this).parents('tr').children("td:nth-child(2)").focus();
-                }
-            });
-
-            // sous-famille
-
-            $('.sf-table-add').on('click', function () {
-                var $clone = $("table#sous-famille-table").find('tr.hide').clone(true).removeAttr('style').removeClass('hide');
-                $(this).parent().find('table#sous-famille-table').append($clone);
-            });
-
-            $('.sf-table-save').click(function () {
-                familleId = $(this).parents('tr').children("td:nth-child(2)").find('select').val();
-                familleName = $(this).parents('tr').children("td:nth-child(2)").find('select option:selected').text();
-                catValue = $(this).parents('tr').children("td:nth-child(3)").html();
-                if(catValue != ""){
-                    axios.post("/piece/sous-famille/create", {
-                        name: catValue,
-                        famille: familleId
-                    }).then(response => {
-                        console.log("Done");
-                        $(this).parents('td').find('span.sf-table-remove').attr('data-id', response.data.categorieId);
-                        $(this).parents('tr').find("td:nth-child(1)").html(response.data.categorieId);
-                        $(this).parents('tr').find("td:nth-child(2)").html(familleName);
-                        $(this).parents('tr').find("td:nth-child(3)").attr('contenteditable', false);
-                        $(this).parents('tr').find("td:nth-child(2)").attr('data-id', response.data.categorieId);
-                        $(this).remove();
-                    }).catch(function (error) {
-                        if(error.response){
-                            if (error.response.status === 403) {
-                                window.alert("Pas connecté");
-                            } else {
-                                window.alert("Grosse erreur");
-                            }
-                        }
-                    });
-                }
-                else {
-                    $(this).parents('tr').children("td:nth-child(3)").focus();
-                }
-            });
-
-            $('.sf-table-remove').click(function () {
-                catId = $(this).data('id');
-                catType = $(this).data('type');
-                if(catId){
-                    if(confirm("Etes-vous sûr?")){
-                        axios.post("/piece/categorie/delete", {
-                            id: catId,
-                            type: catType
-                        }).then(response => {
-                            console.log("Done");
-                            $(this).parents('tr').detach();
-                        }).catch(function (error) {
-                            if(error.response){
-                                if (error.response.status === 403) {
-                                    window.alert("Pas connecté");
-                                } else {
-                                    window.alert("Grosse erreur");
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    $(this).parents('tr').detach();
-                }
-            });
-        });
-
-    </script>
+  <script></script>
 {% endblock %}
