@@ -30,40 +30,40 @@
 {% block body %}
 
     <div class="container">
-        <h1>Enregistrement d'une entrée</h1>
+        <h1>{{ 'Receipt record' | trans }}</h1>
 
         {{ form_start(formMouvementPiece) }}
         <div class="col-md-9 form-group-piece  d-flex justify-content-between">
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Fournisseur</label>
-                {{ form_widget(formMouvementPiece.fournisseur, {'attr': {'placeholder': 'Fournisseur'}}) }}
+                <label for="">{{ 'Provider' | trans }}</label>
+                {{ form_widget(formMouvementPiece.fournisseur, {'attr': {'placeholder': 'Provider' | trans}}) }}
             </div>
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Famille</label>
-                {{ form_widget(formMouvementPiece.famille, {'attr': {'placeholder': 'Famille'}}) }}
+                <label for="">{{ 'Family' | trans }}</label>
+                {{ form_widget(formMouvementPiece.famille, {'attr': {'placeholder': 'Family' | trans}}) }}
             </div>
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Sous-famille</label>
-                {{ form_widget(formMouvementPiece.sousFamille, {'attr': {'placeholder': 'Sous-famille'}}) }}
+                <label for="">{{ 'Subfamily' | trans }}</label>
+                {{ form_widget(formMouvementPiece.sousFamille, {'attr': {'placeholder': 'Subfamily' | trans}}) }}
             </div>
         </div>
         <div class="col-md-9 form-group-piece  d-flex justify-content-between">
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Quantité</label>
-                {{ form_widget(formMouvementPiece.quantity, {'attr': {'placeholder': 'Quantité'}}) }}
+                <label for="">{{ 'Quantity' | trans }}</label>
+                {{ form_widget(formMouvementPiece.quantity, {'attr': {'placeholder': 'Quantity' | trans}}) }}
             </div>
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Dimension</label>
-                {{ form_widget(formMouvementPiece.dimension, {'attr': {'placeholder': 'Dimension'}}) }}
+                <label for="">{{ 'Dimension' | trans }}</label>
+                {{ form_widget(formMouvementPiece.dimension, {'attr': {'placeholder': 'Dimension' | trans}}) }}
             </div>
             <div class="form-group col-md-3 col-sm-12 col-xs-12">
-                <label for="">Poids</label>
-                {{ form_widget(formMouvementPiece.weight, {'attr': {'placeholder': 'Poids'}}) }}
+                <label for="">{{ 'Weight' | trans }}</label>
+                {{ form_widget(formMouvementPiece.weight, {'attr': {'placeholder': 'Weight' | trans}}) }}
             </div>
         </div>
         <div class="col-md-3 btn-container">
             <button type="submit" class="btn btn-success">
-                Enregistrer
+                {{ 'Save' | trans }}
             </button>
         </div>
 

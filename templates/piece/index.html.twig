@@ -1,124 +1,125 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello
-    {{ controller_name }}!{% endblock %}
+  {{ controller_name }}!
+{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css">
-    <style>
-        .btn-piece-location-edit {
-            float: right;
-            display: none !important;
-        }
+  <link href="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.css" rel="stylesheet">
+  <style>
+    .btn-piece-location-edit {
+      float: right;
+      display: none !important;
+    }
 
-        .modal-content {
-            width: 50% !important;
-            margin: 0 auto !important;
-        }
-    </style>
+    .modal-content {
+      width: 50% !important;
+      margin: 0 auto !important;
+    }
+  </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h2>Stock</h2>
-                </div>
-            </div>
-            <div class="panel col-md-12">
-                <table class="table table-bordered table-striped" id="stock">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Fournisseur</th>
-                            <th>Famille</th>
-                            <th>Sous-famille</th>
-                            <th>Emplacement dans magasin</th>
-                            <th>Quantité en stock</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th colspan="5" class="ts-pager">
-                                <div class="form-inline">
-                                    <div class="btn-group btn-group-sm mx-1" role="group">
-                                        <button type="button" class="btn btn-secondary first" title="first">⇤</button>
-                                        <button type="button" class="btn btn-secondary prev" title="previous">←</button>
-                                    </div>
-                                    <span class="pagedisplay"></span>
-                                    <div class="btn-group btn-group-sm mx-1" role="group">
-                                        <button type="button" class="btn btn-secondary next" title="next">→</button>
-                                        <button type="button" class="btn btn-secondary last" title="last">⇥</button>
-                                    </div>
-                                    <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
-                                        <option selected="selected" value="10">10</option>
-                                        <option value="20">20</option>
-                                        <option value="30">30</option>
-                                        <option value="all">All Rows</option>
-                                    </select>
-                                    <select class="form-control-sm custom-select px-4 mx-1 pagenum" title="Select page number"></select>
-                                </div>
-                            </th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        {% for piece in pieces %}
-                            <tr>
-                                <td>{{ piece.fournisseur.name }}</td>
-                                <td>{{ piece.famille.name }}</td>
-                                <td>
-                                    {% if piece.sousFamille is not null and piece.sousFamille is defined %}
-                                        {{ piece.sousFamille.name }}
-                                    {% endif %}
-                                </td>
-                                <td height="42">
-                                    <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
-                                    <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille ? piece.sousFamille.id : '' }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
-                                </td>
-                                <td>{{ piece.stockQuantity }}</td>
-                            </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
-                <div class="modal fade" id="locationEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content"></div>
-                    </div>
-                    <div class="modal-dialog">
-                        <div class="modal-content"></div>
-                    </div>
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">
-                                    <span aria-hidden="true" class="">×
-                                    </span><span class="sr-only">Femer</span>
-
-                                </button>
-
-                            </div>
-                            <div class="modal-body"></div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                                <button type="button" class="btn btn-primary">Terminer</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2>Stock</h2>
         </div>
+      </div>
+      <div class="panel col-md-12">
+        <table class="table table-bordered table-striped" id="stock">
+          <thead class="thead-dark">
+            <tr>
+              <th>{{ 'Provider' | trans }}</th>
+              <th>{{ 'Family' | trans }}</th>
+              <th>{{ 'Subfamily' | trans }}</th>
+              <th>{{ 'Store location' | trans }}</th>
+              <th>{{ 'Quantity in stock' | trans }}</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th class="ts-pager" colspan="5">
+                <div class="form-inline">
+                  <div class="btn-group btn-group-sm mx-1" role="group">
+                    <button class="btn btn-secondary first" title="first" type="button">⇤</button>
+                    <button class="btn btn-secondary prev" title="previous" type="button">←</button>
+                  </div>
+                  <span class="pagedisplay"></span>
+                  <div class="btn-group btn-group-sm mx-1" role="group">
+                    <button class="btn btn-secondary next" title="next" type="button">→</button>
+                    <button class="btn btn-secondary last" title="last" type="button">⇥</button>
+                  </div>
+                  <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="all">All Rows</option>
+                  </select>
+                  <select class="form-control-sm custom-select px-4 mx-1 pagenum" title="Select page number"></select>
+                </div>
+              </th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for piece in pieces %}
+              <tr>
+                <td>{{ piece.fournisseur.name }}</td>
+                <td>{{ piece.famille.name }}</td>
+                <td>
+                  {% if piece.sousFamille is not null and piece.sousFamille is defined %}
+                    {{ piece.sousFamille.name }}
+                  {% endif %}
+                </td>
+                <td height="42">
+                  <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
+                  <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille ? piece.sousFamille.id : '' }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
+                </td>
+                <td>{{ piece.stockQuantity }}</td>
+              </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="locationEditModal" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content"></div>
+          </div>
+          <div class="modal-dialog">
+            <div class="modal-content"></div>
+          </div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">
+                  <span aria-hidden="true" class="">×
+                  </span>
+                  <span class="sr-only">Femer</span>
+
+                </button>
+
+              </div>
+              <div class="modal-body"></div>
+              <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Fermer</button>
+                <button class="btn btn-primary" type="button">Terminer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
-    <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
-    <script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            /*$('#stock').DataTable({
+  <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+  <script src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.widgets.js"></script>
+  <script src="https://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    $(document).ready(function () { /*$('#stock').DataTable({
                 "language": {
                     "sProcessing": "Traitement en cours...",
                     "sSearch": "Rechercher&nbsp;:",
@@ -151,123 +152,119 @@
             });
             $('#stock_length').css('display', 'none');*/
 
-            $("table#stock")
-                .tablesorter({
-                    theme: "bootstrap", widthFixed: true,
+      $("table#stock").tablesorter({
+        theme: "bootstrap", widthFixed: true,
 
-                    // widget code contained in the jquery.tablesorter.widgets.js file
-                    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
-                    // the uitheme widget is NOT REQUIRED!
-                    widgets: [
-                        "filter", "columns", "zebra"
-                    ],
+        // widget code contained in the jquery.tablesorter.widgets.js file
+        // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+        // the uitheme widget is NOT REQUIRED!
+        widgets: [
+          "filter", "columns", "zebra"
+        ],
 
-                    widgetOptions: {
-                        // using the default zebra striping class name, so it actually isn't included in the theme variable above
-                        // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
-                        zebra: [
-                            "even", "odd"
-                        ],
+        widgetOptions: {
+          // using the default zebra striping class name, so it actually isn't included in the theme variable above
+          // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+          zebra: [
+            "even", "odd"
+          ],
 
-                        // class names added to columns when sorted
-                        columns: [
-                            "primary", "secondary", "tertiary"
-                        ],
+          // class names added to columns when sorted
+          columns: [
+            "primary", "secondary", "tertiary"
+          ],
 
-                        // reset filters button
-                        filter_reset: ".reset",
+          // reset filters button
+          filter_reset: ".reset",
 
-                        // extra css class name (string or array) added to the filter element (input or select)
-                        filter_cssFilter: [
-                            'form-control', // select needs custom class names :(
-                            'form-control',
-                            'form-control',
-                            'form-control',
-                            'form-control'
-                        ]
-
-                    }
-                })
-                .tablesorterPager({
-
-                    // target the pager markup - see the HTML block below
-                    container: $(".ts-pager"),
-
-                    // target the pager page select dropdown - choose a page
-                    cssGoto: ".pagenum",
-
-                    // remove rows from the table to speed up the sort of large tables.
-                    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
-                    removeRows: false,
-
-                    // output string - default is '{page}/{totalPages}';
-                    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
-                    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
-
-                });
-
-            $("table#stock tbody tr td:nth-child(4)").mouseover(function () {
-                $(this).find('button').attr('style', 'display: inline-block !important');
-            });
-            $("table#stock tbody tr td:nth-child(4)").mouseleave(function () {
-                $(this).find('button').attr('style', 'display: none !important');
-            });
-
-            $(".btn[data-target='#locationEditModal']").click(function () {
-                var modalBody = $('<div id="modalContent"></div>');
-                var modalForm = $('<form role="form" name="modalForm" method="post"></form>');
-
-                var formGroup = $('<div class="form-group"></div>');
-                formGroup.append('<label for="piece-conteneur">Conteneur</label>');
-                formGroup.append('<input class="form-control" name="piece-conteneur" id="piece-conteneur" value="' + $(this).data('conteneur') + '"/>');
-                formGroup.append('<input type="hidden" id="piece-fournisseur" value="' + $(this).data('fournisseur') + '"/>');
-                formGroup.append('<input type="hidden" id="piece-famille" value="' + $(this).data('famille') + '"/>');
-                formGroup.append('<input type="hidden" id="piece-sousFamille" value="' + $(this).data('sous-famille') + '"/>');
-                formGroup.append('<input type="hidden" id="piece-iteration" value="' + $(this).data('iteration') + '"/>');
-
-                modalForm.append(formGroup);
-
-                formGroup = $('<div class="form-group"></div>');
-                formGroup.append('<label for="piece-etagere">Etagère</label>');
-                formGroup.append('<input class="form-control" name="piece-etagere" id="piece-etagere" value="' + $(this).data('etagere') + '"/>');
-                modalForm.append(formGroup);
-
-                formGroup = $('<div class="form-group"></div>');
-                formGroup.append('<label for="piece-niveau">Niveau</label>');
-                formGroup.append('<input class="form-control" name="piece-niveau" id="piece-niveau" value="' + $(this).data('niveau') + '"/>');
-                modalForm.append(formGroup);
-
-                modalBody.append(modalForm);
-                $('.modal-body').html(modalBody);
-            });
-
-            $('.modal-footer .btn-primary').click(function (event) {
-                event.preventDefault();
-                // $('form[name="modalForm"]').submit();
-                onClickBtnEdit();
-            });
-        });
-
-        function onClickBtnEdit() {
-
-            axios.post("/piece/location/edit", {
-                conteneur: $("#piece-conteneur").val(),
-                etagere: $("#piece-etagere").val(),
-                niveau: $("#piece-niveau").val(),
-                fournisseur: $("#piece-fournisseur").val(),
-                famille: $("#piece-famille").val(),
-                sousFamille: $("#piece-sousFamille").val()
-            }).then(response => {
-                $("span#piece-location-" + $("#piece-iteration").val()).html(response.data.location);
-                $('#locationEditModal').modal('toggle');
-            }).catch(function (error) {
-                if (error.response.status === 403) {
-                    window.alert("Pas connecté");
-                } else {
-                    window.alert("Grosse erreur");
-                }
-            });
+          // extra css class name (string or array) added to the filter element (input or select)
+          filter_cssFilter: [
+            'form-control', // select needs custom class names :(
+            'form-control',
+            'form-control',
+            'form-control',
+            'form-control'
+          ]
 
         }
-    </script>
+      }).tablesorterPager({ // target the pager markup - see the HTML block below
+        container: $(".ts-pager"),
+
+        // target the pager page select dropdown - choose a page
+        cssGoto: ".pagenum",
+
+        // remove rows from the table to speed up the sort of large tables.
+        // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
+        removeRows: false,
+
+        // output string - default is '{page}/{totalPages}';
+        // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
+        output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
+
+      });
+
+      $("table#stock tbody tr td:nth-child(4)").mouseover(function () {
+        $(this).find('button').attr('style', 'display: inline-block !important');
+      });
+      $("table#stock tbody tr td:nth-child(4)").mouseleave(function () {
+        $(this).find('button').attr('style', 'display: none !important');
+      });
+
+      $(".btn[data-target='#locationEditModal']").click(function () {
+        var modalBody = $('<div id="modalContent"></div>');
+        var modalForm = $('<form role="form" name="modalForm" method="post"></form>');
+
+        var formGroup = $('<div class="form-group"></div>');
+        formGroup.append('<label for="piece-conteneur">Conteneur</label>');
+        formGroup.append('<input class="form-control" name="piece-conteneur" id="piece-conteneur" value="' + $(this).data('conteneur') + '"/>');
+        formGroup.append('<input type="hidden" id="piece-fournisseur" value="' + $(this).data('fournisseur') + '"/>');
+        formGroup.append('<input type="hidden" id="piece-famille" value="' + $(this).data('famille') + '"/>');
+        formGroup.append('<input type="hidden" id="piece-sousFamille" value="' + $(this).data('sous-famille') + '"/>');
+        formGroup.append('<input type="hidden" id="piece-iteration" value="' + $(this).data('iteration') + '"/>');
+
+        modalForm.append(formGroup);
+
+        formGroup = $('<div class="form-group"></div>');
+        formGroup.append('<label for="piece-etagere">Etagère</label>');
+        formGroup.append('<input class="form-control" name="piece-etagere" id="piece-etagere" value="' + $(this).data('etagere') + '"/>');
+        modalForm.append(formGroup);
+
+        formGroup = $('<div class="form-group"></div>');
+        formGroup.append('<label for="piece-niveau">Niveau</label>');
+        formGroup.append('<input class="form-control" name="piece-niveau" id="piece-niveau" value="' + $(this).data('niveau') + '"/>');
+        modalForm.append(formGroup);
+
+        modalBody.append(modalForm);
+        $('.modal-body').html(modalBody);
+      });
+
+      $('.modal-footer .btn-primary').click(function (event) {
+        event.preventDefault();
+        // $('form[name="modalForm"]').submit();
+        onClickBtnEdit();
+      });
+    });
+
+    function onClickBtnEdit() {
+
+      axios.post("/piece/location/edit", {
+        conteneur: $("#piece-conteneur").val(),
+        etagere: $("#piece-etagere").val(),
+        niveau: $("#piece-niveau").val(),
+        fournisseur: $("#piece-fournisseur").val(),
+        famille: $("#piece-famille").val(),
+        sousFamille: $("#piece-sousFamille").val()
+      }).then(response => {
+        $("span#piece-location-" + $("#piece-iteration").val()).html(response.data.location);
+        $('#locationEditModal').modal('toggle');
+      }).catch(function (error) {
+        if (error.response.status === 403) {
+          window.alert("Pas connecté");
+        } else {
+          window.alert("Grosse erreur");
+        }
+      });
+
+    }
+  </script>
 {% endblock %}

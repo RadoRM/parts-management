@@ -3,22 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Piece;
-use App\Entity\Fournisseur;
 use App\Entity\Famille;
+use App\Entity\Fournisseur;
 use App\Entity\SousFamille;
 use App\Repository\PieceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PieceController extends AbstractController
 {
     /**
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return Response
      * @Route("/piece", name="piece")
      */
-    public function index()
+    public function index(Request $request, TranslatorInterface $translator)
     {
         $repo = $this->getDoctrine()->getRepository(Piece::class);
 
@@ -38,7 +42,12 @@ class PieceController extends AbstractController
             'pieces' => $pieces
         ]);
     }
+
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param PieceRepository $pieceRepo
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/piece/location/edit", name="piece_location_edit")
      */
     public function editLocation(Request $request, ObjectManager $manager, PieceRepository $pieceRepo)
@@ -69,8 +78,12 @@ class PieceController extends AbstractController
         ], 200);
 
     }
-    
+
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param PieceRepository $pieceRepo
+     * @return Response
      * @Route("/piece/categorie", name="piece_categorie_list")
      */
     public function listCategories(Request $request, ObjectManager $manager, PieceRepository $pieceRepo)
@@ -93,6 +106,9 @@ class PieceController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/piece/categorie/edit", name="piece_categorie_edit")
      */
     public function editCategories(Request $request, ObjectManager $manager)
@@ -126,6 +142,9 @@ class PieceController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/piece/categorie/create", name="piece_categorie_create")
      */
     public function createCategorie(Request $request, ObjectManager $manager)
@@ -183,6 +202,9 @@ class PieceController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/piece/categorie/delete", name="piece_categorie_delete")
      */
     public function deleteCategorie(Request $request, ObjectManager $manager)
@@ -217,6 +239,9 @@ class PieceController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @Route("/piece/sous-famille/create", name="piece_sousfamille_create")
      */
     public function createSfCategorie(Request $request, ObjectManager $manager)

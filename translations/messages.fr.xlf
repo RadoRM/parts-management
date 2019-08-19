@@ -1,0 +1,82 @@
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="provider">
+                <source>Provider</source>
+                <target>Fournisseur</target>
+            </trans-unit>
+            <trans-unit id="familly">
+                <source>Family</source>
+                <target>Famille</target>
+            </trans-unit>
+            <trans-unit id="sous-famille">
+                <source>Subfamily</source>
+                <target>Sous-famille</target>
+            </trans-unit>
+            <trans-unit id="store_location">
+                <source>Store location</source>
+                <target>Emplacement dans magasin</target>
+            </trans-unit>
+            <trans-unit id="qty_stock">
+                <source>Quantity in stock</source>
+                <target>Quantité en stock</target>
+            </trans-unit>
+            <trans-unit id="spare_parts_management">
+                <source>Spare parts management</source>
+                <target>Gestion de pièces</target>
+            </trans-unit>
+            <trans-unit id="Category">
+                <source>Category</source>
+                <target>Catégories</target>
+            </trans-unit>
+            <trans-unit id="parte_parts">
+                <source>Spare parts</source>
+                <target>Pièces</target>
+            </trans-unit>
+            <trans-unit id="movements">
+                <source>Movements</source>
+                <target>Mouvements</target>
+            </trans-unit>
+            <trans-unit id="receipt">
+                <source>Receipt</source>
+                <target>Entrée</target>
+            </trans-unit>
+            <trans-unit id="release">
+                <source>Release</source>
+                <target>Sortie</target>
+            </trans-unit>
+            <trans-unit id="history">
+                <source>History</source>
+                <target>Historique</target>
+            </trans-unit>
+            <trans-unit id="sign_up">
+                <source>Sign up</source>
+                <target>Inscription</target>
+            </trans-unit>
+            <trans-unit id="sign_in">
+                <source>Sign in</source>
+                <target>Connexion</target>
+            </trans-unit>
+            <trans-unit id="sign_out">
+                <source>Sign out</source>
+                <target>Déconnexion</target>
+            </trans-unit>
+            <trans-unit id="receipt_record">
+                <source>Receipt record</source>
+                <target>Enregistrement d'entrée</target>
+            </trans-unit>
+            <trans-unit id="quantity">
+                <source>Quantity</source>
+                <target>Quantité</target>
+            </trans-unit>
+            <trans-unit id="weight">
+                <source>Weight</source>
+                <target>Poids</target>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row" style="text-align :center;">
         <div class="col-md-12">
-            <h1>Connexion</h1>
+            <h1>{{ 'Sign in' | trans }}</h1>
         </div>
         <div class="col-md-4" style="margin: 0 auto;">
             <form action="{{ path('security_login') }}" method="post">
@@ -15,7 +15,7 @@
                     <input type="password" placeholder="Mot de passe" required name="_password" class="form-control">   
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Connexion</button>   
+                    <button type="submit" class="btn btn-success">{{ 'Sign in' | trans }}</button>
                 </div>
             </form>
         </div>

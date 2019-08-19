@@ -10,7 +10,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="/">PIECES MANAGEMENT</a>
+            <a class="navbar-brand" href="/">{{ 'Spare parts management' | trans }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,30 +18,30 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Pièces</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Spare parts' | trans }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/piece">Stock</a>
-                            <a class="dropdown-item" href="/piece/categorie">Catégories</a>
+                            <a class="dropdown-item" href="/piece/categorie">{{ 'Category' | trans }}</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mouvements</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Movements' | trans }}</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/mouvement/new">Entrée</a>
-                            <a class="dropdown-item" href="#">Sortie</a>
-                            <a class="dropdown-item" href="#">Historique</a>
+                            <a class="dropdown-item" href="/mouvement/new">{{ 'Receipt' | trans }}</a>
+                            <a class="dropdown-item" href="#">{{ 'Release' | trans }}</a>
+                            <a class="dropdown-item" href="#">{{ 'History' | trans }}</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/inscription">Inscription</a>
+                        <a class="nav-link" href="/inscription">{{ 'Sign up' | trans }}</a>
                     </li>
                     {% if not app.user %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_login') }}">Connexion</a>
+                            <a class="nav-link" href="{{ path('security_login') }}">{{ 'Sign in' | trans }}</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_logout') }}">Déconnexion</a>
+                            <a class="nav-link" href="{{ path('security_logout') }}">{{ 'Sign out' | trans }}</a>
                         </li>
                     {% endif %}
                 </ul>
