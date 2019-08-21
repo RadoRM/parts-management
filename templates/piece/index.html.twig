@@ -19,98 +19,88 @@
   </style>
 {% endblock %}
 
+{% block page_title %}Stock{% endblock %}
 {% block body %}
-  <div class="container">
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h2>Stock</h2>
-        </div>
-      </div>
-      <div class="panel col-md-12">
-        <table class="table table-bordered table-striped" id="stock">
-          <thead class="thead-dark">
-            <tr>
-              <th>{{ 'Provider' | trans }}</th>
-              <th>{{ 'Family' | trans }}</th>
-              <th>{{ 'Subfamily' | trans }}</th>
-              <th>{{ 'Store location' | trans }}</th>
-              <th>{{ 'Quantity in stock' | trans }}</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th class="ts-pager" colspan="5">
-                <div class="form-inline">
-                  <div class="btn-group btn-group-sm mx-1" role="group">
-                    <button class="btn btn-secondary first" title="first" type="button">⇤</button>
-                    <button class="btn btn-secondary prev" title="previous" type="button">←</button>
-                  </div>
-                  <span class="pagedisplay"></span>
-                  <div class="btn-group btn-group-sm mx-1" role="group">
-                    <button class="btn btn-secondary next" title="next" type="button">→</button>
-                    <button class="btn btn-secondary last" title="last" type="button">⇥</button>
-                  </div>
-                  <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
-                    <option selected="selected" value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="all">All Rows</option>
-                  </select>
-                  <select class="form-control-sm custom-select px-4 mx-1 pagenum" title="Select page number"></select>
-                </div>
-              </th>
-            </tr>
-          </tfoot>
-          <tbody>
-            {% for piece in pieces %}
-              <tr>
-                <td>{{ piece.fournisseur.name }}</td>
-                <td>{{ piece.famille.name }}</td>
-                <td>
-                  {% if piece.sousFamille is not null and piece.sousFamille is defined %}
-                    {{ piece.sousFamille.name }}
-                  {% endif %}
-                </td>
-                <td height="42">
-                  <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
-                  <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille ? piece.sousFamille.id : '' }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
-                </td>
-                <td>{{ piece.stockQuantity }}</td>
-              </tr>
-            {% endfor %}
-
-          </tbody>
-        </table>
-        <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="locationEditModal" role="dialog" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content"></div>
-          </div>
-          <div class="modal-dialog">
-            <div class="modal-content"></div>
-          </div>
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button class="close" data-dismiss="modal" type="button">
-                  <span aria-hidden="true" class="">×
-                  </span>
-                  <span class="sr-only">Femer</span>
-
-                </button>
-
+    <table class="table table-bordered table-striped" id="stock">
+      <thead class="thead-dark">
+        <tr>
+          <th>{{ 'Provider' | trans }}</th>
+          <th>{{ 'Family' | trans }}</th>
+          <th>{{ 'Subfamily' | trans }}</th>
+          <th>{{ 'Store location' | trans }}</th>
+          <th>{{ 'Quantity in stock' | trans }}</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th class="ts-pager" colspan="5">
+            <div class="form-inline">
+              <div class="btn-group btn-group-sm mx-1" role="group">
+                <button class="btn btn-secondary first" title="first" type="button">⇤</button>
+                <button class="btn btn-secondary prev" title="previous" type="button">←</button>
               </div>
-              <div class="modal-body"></div>
-              <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal" type="button">Fermer</button>
-                <button class="btn btn-primary" type="button">Terminer</button>
+              <span class="pagedisplay"></span>
+              <div class="btn-group btn-group-sm mx-1" role="group">
+                <button class="btn btn-secondary next" title="next" type="button">→</button>
+                <button class="btn btn-secondary last" title="last" type="button">⇥</button>
               </div>
+              <select class="form-control-sm custom-select px-1 pagesize" title="Select page size">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="all">All Rows</option>
+              </select>
+              <select class="form-control-sm custom-select px-4 mx-1 pagenum" title="Select page number"></select>
             </div>
+          </th>
+        </tr>
+      </tfoot>
+      <tbody>
+        {% for piece in pieces %}
+          <tr>
+            <td>{{ piece.fournisseur.name }}</td>
+            <td>{{ piece.famille.name }}</td>
+            <td>
+              {% if piece.sousFamille is not null and piece.sousFamille is defined %}
+                {{ piece.sousFamille.name }}
+              {% endif %}
+            </td>
+            <td height="42">
+              <span id="piece-location-{{ loop.index }}">{{ piece.location }}</span>
+              <button data-conteneur="{{ piece.conteneur }}" data-etagere="{{ piece.etagere }}" data-niveau="{{ piece.niveau }}" data-fournisseur="{{ piece.fournisseur.id }}" data-famille="{{ piece.famille.id }}" data-sous-famille="{{ piece.sousFamille ? piece.sousFamille.id : '' }}" data-iteration="{{ loop.index }}" class="btn btn-primary  btn-sm btn-piece-location-edit" data-toggle="modal" data-target="#locationEditModal">Editer</button>
+            </td>
+            <td>{{ piece.stockQuantity }}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="locationEditModal" role="dialog" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal" type="button">
+              <span aria-hidden="true" class="">×
+              </span>
+              <span class="sr-only">Femer</span>
+
+            </button>
+
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal" type="button">Fermer</button>
+            <button class="btn btn-primary" type="button">Terminer</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}
 
 {% block javascripts %}

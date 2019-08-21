@@ -9,50 +9,63 @@
         <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="/">{{ 'Spare parts management' | trans }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="container">
+            <div class="row">
+                <nav  role="navigation" class="navbar navbar-default navbar-static-top navbar-dark bg-primary col-md-12">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="/">{{ 'Spare parts management' | trans }}</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
 
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Spare parts' | trans }}</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/piece">Stock</a>
-                            <a class="dropdown-item" href="/piece/categorie">{{ 'Category' | trans }}</a>
+                        <div class="collapse navbar-collapse" id="navbarColor01">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item dropdown active">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Spare parts' | trans }}</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="/piece">Stock</a>
+                                        <a class="dropdown-item" href="/piece/categorie">{{ 'Category' | trans }}</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Movements' | trans }}</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="/mouvement/new">{{ 'Receipt' | trans }}</a>
+                                        <a class="dropdown-item" href="#">{{ 'Release' | trans }}</a>
+                                        <a class="dropdown-item" href="#">{{ 'History' | trans }}</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/inscription">{{ 'Sign up' | trans }}</a>
+                                </li>
+                                {% if not app.user %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('security_login') }}">{{ 'Sign in' | trans }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path('security_logout') }}">{{ 'Sign out' | trans }}</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
                         </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Movements' | trans }}</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/mouvement/new">{{ 'Receipt' | trans }}</a>
-                            <a class="dropdown-item" href="#">{{ 'Release' | trans }}</a>
-                            <a class="dropdown-item" href="#">{{ 'History' | trans }}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/inscription">{{ 'Sign up' | trans }}</a>
-                    </li>
-                    {% if not app.user %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_login') }}">{{ 'Sign in' | trans }}</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('security_logout') }}">{{ 'Sign out' | trans }}</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                </ul>
+                    </div>
+                </nav>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">{% block page_title %}{% endblock %}</h2>
+                    </div>
+                    <div class="panel-body">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+                <script src="{{ asset('build/js/app.js') }}"></script>
+                {% block javascripts %}{% endblock %}
             </div>
-        </nav>
-        {% block body %}{% endblock %}
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-        <script src="{{ asset('build/js/app.js') }}"></script>
-        {% block javascripts %}{% endblock %}
+        </div>
     </body>
 </html>

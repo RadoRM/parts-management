@@ -1,24 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title %}{{ 'Sign in' | trans }}{% endblock %}
 {% block body %}
-<div class="container">
-    <div class="row" style="text-align :center;">
-        <div class="col-md-12">
-            <h1>{{ 'Sign in' | trans }}</h1>
-        </div>
-        <div class="col-md-4" style="margin: 0 auto;">
-            <form action="{{ path('security_login') }}" method="post">
-                <div class="form-group">
-                    <input type="text" placeholder="Adresse email" required name="_username" class="form-control">   
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Mot de passe" required name="_password" class="form-control">   
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">{{ 'Sign in' | trans }}</button>
-                </div>
-            </form>
-        </div>
+    <div class="col-md-4" style="margin: 0 auto;">
+        <form action="{{ path('security_login') }}" method="post">
+            <div class="form-group">
+                <input type="text" placeholder="Adresse email" required name="_username" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Mot de passe" required name="_password" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">{{ 'Sign in' | trans }}</button>
+            </div>
+        </form>
     </div>
-</div>
 {% endblock %}
