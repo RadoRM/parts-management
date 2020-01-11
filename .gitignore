@@ -291,7 +291,7 @@ Temporary Items
 # /bin/*
 # !bin/console
 # !bin/symfony_requirements
-/vendor/
+# /vendor/
 
 # Assets and user uploads
 /web/bundles/
