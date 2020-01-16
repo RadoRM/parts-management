@@ -291,7 +291,9 @@ Temporary Items
 # /bin/*
 # !bin/console
 # !bin/symfony_requirements
-# /vendor/
+/vendor/
+/src/Migrations/*
+/public/.htaccess
 
 # Assets and user uploads
 /web/bundles/
